@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskLab - Student Task & Lab Manager | Atur Deadline & Praktikum Tanpa Stres</title>
+  <meta name="description" content="Aplikasi produktivitas berbasis web khusus mahasiswa: pantau deadline tugas dengan indikator visual otomatis, kelola jadwal praktikum terpisah, dan simpan link materi kuliah terpusat.">
+  <meta name="keywords" content="student task manager, jadwal praktikum, pengingat deadline kuliah, aplikasi mahasiswa informatika, tasklab">
+
+  <!-- OpenGraph / Social Meta Tags -->
+  <meta property="og:title" content="TaskLab - Student Task & Lab Manager">
+  <meta property="og:description" content="Kalahkan prokrastinasi! Kelola tugas dan jadwal praktikum tanpa keteteran.">
+  <meta property="og:type" content="website">
+
+  <!-- Tailwind CSS Play CDN for ultra-fast, modern utility styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              800: '#3730a3',
+              900: '#312e81'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', '"Inter"', 'system-ui', '-apple-system', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Custom Enhanced Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-indigo-500 selection:text-white">
+
+  <!-- ======================================================================= -->
+  <!-- VIEW 1: PUBLIC LANDING PAGE VIEW (Shown when user is not logged in)     -->
+  <!-- ======================================================================= -->
+  <div id="landingView" class="block transition-all duration-300">
+    
+    <!-- 1. STICKY NAVIGATION BAR (LANDING) -->
+    <header id="mainNav" class="sticky top-0 z-40 w-full nav-glass transition-all duration-300">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16 sm:h-20">
+          
+          <!-- Brand Logo -->
+          <a href="#" class="flex items-center gap-2.5 group">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-600 flex items-center justify-center text-white shadow-md shadow-indigo-500/20 group-hover:scale-105 transition-transform">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+              </svg>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-xl font-extrabold tracking-tight text-slate-900 group-hover:text-indigo-600 transition-colors">
+                Task<span class="text-indigo-600">Lab</span>
+              </span>
+              <span class="text-[10px] font-semibold uppercase tracking-wider text-slate-400 -mt-1 hidden sm:block">
+                Student Task & Lab Manager
+              </span>
+            </div>
+          </a>
+
+          <!-- Desktop Navigation Links -->
+          <nav class="hidden md:flex items-center gap-1 lg:gap-2">
+            <a href="#masalah" class="px-3 py-2 text-sm font-medium text-slate-600 hover:text-indigo-600 hover:bg-slate-100/60 rounded-lg transition">Masalah Mahasiswa</a>
+            <a href="#fitur" class="px-3 py-2 text-sm font-medium text-slate-600 hover:text-indigo-600 hover:bg-slate-100/60 rounded-lg transition">Fitur Utama</a>
+            <a href="#urgensi" class="px-3 py-2 text-sm font-medium text-slate-600 hover:text-indigo-600 hover:bg-slate-100/60 rounded-lg transition">Sistem Urgensi</a>
+            <a href="#live-demo" class="px-3 py-2 text-sm font-medium text-slate-600 hover:text-indigo-600 hover:bg-slate-100/60 rounded-lg transition flex items-center gap-1.5">
+              <span>Simulasi Live</span>
+              <span class="relative flex h-2 w-2">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+            </a>
+            <a href="#faq" class="px-3 py-2 text-sm font-medium text-slate-600 hover:text-indigo-600 hover:bg-slate-100/60 rounded-lg transition">FAQ</a>
+          </nav>
+
+          <!-- Desktop Auth & Action Buttons -->
+          <div class="hidden md:flex items-center gap-3">
+            <button type="button" class="btn-open-login text-sm font-bold text-slate-700 hover:text-indigo-600 px-4 py-2 transition rounded-xl hover:bg-slate-100">
+              Masuk
+            </button>
+            <button type="button" class="btn-coba-sekarang glow-btn inline-flex items-center justify-center px-4 py-2 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition shadow-sm">
+              Coba Sekarang
+            </button>
+          </div>
+
+          <!-- Mobile Hamburger Button & Quick Auth -->
+          <div class="flex items-center gap-2 md:hidden">
+            <button type="button" class="btn-open-login px-3 py-1.5 text-xs font-bold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition">
+              Masuk
+            </button>
+            <button id="mobileMenuBtn" type="button" aria-label="Buka Menu" class="p-2 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-100 transition focus:outline-none">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+              </svg>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </header>
+
+    <!-- Mobile Drawer Menu (Slide-over) -->
+    <div id="mobileMenuBackdrop" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300"></div>
+    <aside id="mobileMenu" class="fixed top-0 right-0 bottom-0 w-5/6 max-w-sm bg-white z-50 shadow-2xl p-6 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col justify-between">
+      <div>
+        <div class="flex items-center justify-between pb-5 border-b border-slate-100">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+              </svg>
+            </div>
+            <span class="text-lg font-bold text-slate-900">TaskLab</span>
+          </div>
+          <button id="closeMobileMenuBtn" aria-label="Tutup Menu" class="p-2 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-100">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+
+        <nav class="mt-6 flex flex-col gap-2">
+          <a href="#masalah" class="mobile-nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition">
+            <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+            Masalah Mahasiswa
+          </a>
+          <a href="#fitur" class="mobile-nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition">
+            <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+            Fitur Utama
+          </a>
+          <a href="#urgensi" class="mobile-nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition">
+            <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            Sistem Urgensi Warna
+          </a>
+          <a href="#live-demo" class="mobile-nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition">
+            <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            Simulasi Interaktif
+          </a>
+          <a href="#faq" class="mobile-nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition">
+            <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            Tanya Jawab (FAQ)
+          </a>
+        </nav>
+      </div>
+
+      <div class="pt-6 border-t border-slate-100 flex flex-col gap-3">
+        <button type="button" class="btn-open-login w-full py-2.5 text-center text-sm font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition">
+          Masuk ke Akun
+        </button>
+        <button type="button" class="btn-coba-sekarang w-full py-2.5 text-center text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition shadow">
+          Coba Sekarang (Daftar)
+        </button>
+      </div>
+    </aside>
+
+    <main>
+      <!-- 2. HERO SECTION -->
+      <section class="relative pt-12 pb-20 md:pt-20 md:pb-32 overflow-hidden hero-gradient-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+            
+            <!-- Hero Copywriter Column -->
+            <div class="lg:col-span-7 text-center lg:text-left">
+              <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 text-xs sm:text-sm font-semibold mb-6 shadow-sm pulse-badge">
+                <span class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
+                Dirancang Khusus Mahasiswa Teknik & Sains
+              </div>
+
+              <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 leading-[1.15]">
+                Kalahkan Prokrastinasi.<br class="hidden sm:inline">
+                Kelola Tugas & Praktikum <span class="gradient-text">Tanpa Keteteran.</span>
+              </h1>
+
+              <p class="mt-5 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                Selamatkan semester Anda dari jebakan rebahan, scrolling TikTok, dan main game saat deadline H-1. 
+                Satu hub terpusat untuk <strong class="text-slate-800">jadwal praktikum</strong>, <strong class="text-slate-800">pengingat deadline otomatis</strong>, dan <strong class="text-slate-800">link modul materi</strong> tanpa pusing cari di grup chat.
+              </p>
+
+              <!-- Dual CTAs: Coba Sekarang & Simulasi -->
+              <div class="mt-8 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5">
+                <button type="button" class="btn-coba-sekarang w-full sm:w-auto glow-btn inline-flex items-center justify-center gap-2 px-7 py-3.5 text-base font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition cursor-pointer shadow-lg shadow-indigo-500/25">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                  <span>Coba Sekarang (Gratis)</span>
+                </button>
+                <button type="button" class="open-add-task-modal w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 text-base font-semibold text-slate-700 hover:text-indigo-600 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl transition shadow-sm">
+                  <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                  <span>Simulasi Tambah Tugas</span>
+                </button>
+              </div>
+
+              <!-- Social Proof / Metrics Badge Bar -->
+              <div class="mt-10 pt-8 border-t border-slate-200/80 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs text-slate-500">
+                <div class="flex items-center gap-2">
+                  <svg class="w-4 h-4 text-emerald-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                  <span class="font-medium text-slate-700">98% Tugas Tepat Waktu</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <svg class="w-4 h-4 text-indigo-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                  <span class="font-medium text-slate-700">0 Praktikum Kelewat</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <svg class="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                  <span class="font-medium text-slate-700">Ringan di HP & PC</span>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Hero Graphic Column: Interactive Mockup Dashboard (PRD MVP Showcase) -->
+            <div class="lg:col-span-5">
+              <div class="relative mx-auto max-w-lg lg:max-w-none">
+                <div class="absolute -top-4 -left-4 w-64 h-64 bg-indigo-400/20 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-6 -right-6 w-64 h-64 bg-rose-400/20 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="dashboard-frame relative shadow-2xl transition hover:shadow-indigo-500/10">
+                  <div class="bg-slate-100/80 px-4 py-3 border-b border-slate-200/80 flex items-center justify-between">
+                    <div class="flex items-center gap-1.5">
+                      <span class="w-3 h-3 rounded-full bg-rose-400 inline-block"></span>
+                      <span class="w-3 h-3 rounded-full bg-amber-400 inline-block"></span>
+                      <span class="w-3 h-3 rounded-full bg-emerald-400 inline-block"></span>
+                    </div>
+                    <span class="text-xs font-semibold text-slate-500 flex items-center gap-1">
+                      <svg class="w-3.5 h-3.5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                      Dashboard Mahasiswa (Preview)
+                    </span>
+                    <button type="button" class="btn-open-login text-[11px] font-bold text-indigo-600 hover:underline">
+                      Masuk →
+                    </button>
+                  </div>
+
+                  <div class="p-4 sm:p-5 space-y-3.5 bg-white">
+                    <div class="p-3 rounded-xl bg-gradient-to-r from-rose-50 to-amber-50 border border-rose-200/80 flex items-center justify-between">
+                      <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-rose-500 text-white flex items-center justify-center flex-shrink-0 shadow-sm">
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                        </div>
+                        <div>
+                          <div class="text-xs font-bold text-rose-900">Perhatian: 1 Tugas Deadline Besok!</div>
+                          <div class="text-[11px] text-rose-700">Dihitung otomatis oleh sistem berdasarkan tanggal.</div>
+                        </div>
+                      </div>
+                      <span class="text-xs font-bold text-rose-700 bg-white/90 px-2 py-0.5 rounded-md border border-rose-200">H-1</span>
+                    </div>
+
+                    <div class="p-3.5 rounded-xl border border-rose-200 bg-white hover:border-rose-300 transition shadow-xs">
+                      <div class="flex items-start gap-2.5">
+                        <input type="checkbox" aria-label="Tandai selesai" class="task-checkbox mt-0.5" />
+                        <div class="flex-1">
+                          <div class="flex items-center gap-1.5 flex-wrap">
+                            <span class="badge-urgent text-[10px] font-bold px-2 py-0.5 rounded-full">🔴 H-1 Mendesak</span>
+                            <span class="text-[11px] text-slate-500 font-medium">Jaringan Komputer II</span>
+                          </div>
+                          <h4 class="text-xs sm:text-sm font-bold text-slate-900 mt-1">Laporan Routing OSPF & BGP</h4>
+                          <div class="flex items-center gap-2 mt-1.5 text-[11px] text-rose-600 font-medium">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            <span>Besok, 23:59 WIB</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="p-3.5 rounded-xl border border-purple-200 bg-purple-50/40">
+                      <div class="flex items-start gap-2.5">
+                        <div class="w-6 h-6 rounded-md bg-purple-600 text-white flex items-center justify-center flex-shrink-0 text-xs mt-0.5">
+                          🧪
+                        </div>
+                        <div class="flex-1">
+                          <div class="flex items-center gap-1.5">
+                            <span class="badge-lab text-[10px] font-bold px-2 py-0.5 rounded-full">Praktikum Hari Ini</span>
+                            <span class="text-[11px] text-slate-500">Pemrograman Web</span>
+                          </div>
+                          <h4 class="text-xs sm:text-sm font-bold text-slate-900 mt-1">Sesi REST API & Flask Jinja2</h4>
+                          <div class="text-[11px] text-purple-700 mt-1">🕒 13:00 - 15:30 WIB • 📍 Lab 302 Gedung B</div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <div class="bg-slate-50 px-4 py-3 border-t border-slate-200 flex items-center justify-between">
+                    <span class="text-xs text-slate-500">Ingin memakai semua fitur?</span>
+                    <button type="button" class="btn-coba-sekarang text-xs font-bold text-indigo-600 hover:text-indigo-800">
+                      Buka Fitur Lengkap Sekarang →
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. PAIN POINTS & PROBLEMS -->
+      <section id="masalah" class="py-16 sm:py-24 bg-white border-y border-slate-200/70">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div class="text-center max-w-3xl mx-auto mb-16">
+            <span class="text-xs font-bold uppercase tracking-wider text-rose-600 bg-rose-50 px-3 py-1 rounded-full border border-rose-100">
+              Realita Mahasiswa Saat Ini
+            </span>
+            <h2 class="mt-4 text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+              Pernahkah Anda Mengalami Hal Ini di Malam Sebelum Deadline?
+            </h2>
+            <p class="mt-3 text-base text-slate-600">
+              Beban kuliah dan praktikum di semester aktif memang padat, tapi tiga masalah utama ini yang paling sering menggagalkan nilai Anda:
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="card-hover p-6 sm:p-8 rounded-2xl bg-rose-50/40 border border-rose-100 flex flex-col justify-between">
+              <div>
+                <div class="w-12 h-12 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center mb-5 text-xl">🎮</div>
+                <h3 class="text-lg font-bold text-slate-900 mb-2">Prokrastinasi & Distraksi</h3>
+                <p class="text-sm text-slate-600 leading-relaxed">
+                  Niatnya mau ngerjain tugas, tapi malah main game PC atau scrolling TikTok berjam-jam. Tiba-tiba waktu tinggal tersisa 1-2 hari dan kepanikan pun dimulai.
+                </p>
+              </div>
+              <div class="mt-6 pt-4 border-t border-rose-200/60 text-xs font-semibold text-rose-700">
+                ⚠️ Mengakibatkan begadang & tugas asal jadi
+              </div>
+            </div>
+
+            <div class="card-hover p-6 sm:p-8 rounded-2xl bg-amber-50/40 border border-amber-100 flex flex-col justify-between">
+              <div>
+                <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center mb-5 text-xl">⏰</div>
+                <h3 class="text-lg font-bold text-slate-900 mb-2">Lupa Jadwal & Deadline</h3>
+                <p class="text-sm text-slate-600 leading-relaxed">
+                  Praktikum jam 1 siang baru sadar jam 12.30. Tidak ada sistem pengingat yang proaktif selain grup kelas yang sudah tenggelam dengan obrolan stiker.
+                </p>
+              </div>
+              <div class="mt-6 pt-4 border-t border-amber-200/60 text-xs font-semibold text-amber-700">
+                ⚠️ Ketinggalan sesi kuis praktikum & potong poin
+              </div>
+            </div>
+
+            <div class="card-hover p-6 sm:p-8 rounded-2xl bg-indigo-50/40 border border-indigo-100 flex flex-col justify-between">
+              <div>
+                <div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center mb-5 text-xl">📂</div>
+                <h3 class="text-lg font-bold text-slate-900 mb-2">Materi & Catatan Tersebar</h3>
+                <p class="text-sm text-slate-600 leading-relaxed">
+                  Catatan manual di smartphone tidak rapi, harus search histori grup WA berminggu-minggu hanya untuk menemukan file PDF Modul atau link repo GitHub dosen.
+                </p>
+              </div>
+              <div class="mt-6 pt-4 border-t border-indigo-200/60 text-xs font-semibold text-indigo-700">
+                ⚠️ Menghabiskan 30 menit sia-sia cuma cari file
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 4. CORE FEATURES -->
+      <section id="fitur" class="py-16 sm:py-24 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div class="text-center max-w-3xl mx-auto mb-16">
+            <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">
+              Fitur Utama Sesuai PRD
+            </span>
+            <h2 class="mt-4 text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+              Semua yang Dibutuhkan Mahasiswa, Tanpa Fitur Mubazir
+            </h2>
+            <p class="mt-3 text-base text-slate-600">
+              Bukan sekadar to-do list umum, melainkan ekosistem produktivitas yang disesuaikan persis dengan alur perkuliahan dan praktikum.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            <div class="card-hover bg-white p-6 sm:p-7 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+              <div>
+                <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-5">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                </div>
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="text-[11px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">Prioritas P1</span>
+                  <span class="text-xs text-slate-400">CRUD Terstruktur</span>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 mb-2">Daftar Tugas & Deadline</h3>
+                <p class="text-sm text-slate-600 leading-relaxed">
+                  Catat tugas mata kuliah, deskripsi pengerjaan, status tugas (To Do, In Progress, Done), serta pelacakan riwayat pengerjaan tugas secara rinci.
+                </p>
+              </div>
+              <div class="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs font-semibold text-indigo-600">
+                Lengkap dengan filter status & histori
+              </div>
+            </div>
+
+            <div class="card-hover bg-white p-6 sm:p-7 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+              <div>
+                <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center mb-5">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                </div>
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="text-[11px] font-bold text-purple-600 bg-purple-50 px-2 py-0.5 rounded">Prioritas P1</span>
+                  <span class="text-xs text-slate-400">Jadwal Terpisah</span>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 mb-2">Jadwal Praktikum Khusus</h3>
+                <p class="text-sm text-slate-600 leading-relaxed">
+                  Praktikum tidak dicampur aduk dengan tugas biasa. Terdapat daftar khusus lengkap dengan jam sesi, nomor ruang laboratorium, atau link meeting online.
+                </p>
+              </div>
+              <div class="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs font-semibold text-purple-600">
+                Bebas dari risiko absen praktikum
+              </div>
+            </div>
+
+            <div class="card-hover bg-white p-6 sm:p-7 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+              <div>
+                <div class="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center mb-5">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                </div>
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="text-[11px] font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded">Prioritas P1</span>
+                  <span class="text-xs text-slate-400">Anti-Lupa Otomatis</span>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 mb-2">Sistem Urgensi & Deadline</h3>
+                <p class="text-sm text-slate-600 leading-relaxed">
+                  Pengguna hanya perlu memasukkan tanggal & jam deadline. Sistem secara otomatis menghitung selisih waktu dan memberikan indikator Merah H-1 atau Kuning H-3.
+                </p>
+              </div>
+              <div class="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs font-semibold text-rose-600">
+                Kalkulasi cerdas otomatis tanpa repot
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 5. RETENTION & VISUAL URGENCY SYSTEM -->
+      <section id="urgensi" class="py-16 sm:py-24 bg-white border-y border-slate-200/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div class="max-w-3xl mx-auto text-center mb-14">
+            <span class="text-xs font-bold uppercase tracking-wider text-rose-600 bg-rose-50 px-3 py-1 rounded-full border border-rose-100">
+              Strategi Retensi & Psikologi Anti-Tunda
+            </span>
+            <h2 class="mt-4 text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+              Bagaimana Indikator Warna Mengalahkan Hasrat Menunda
+            </h2>
+            <p class="mt-3 text-base text-slate-600">
+              Sistem TaskLab mengevaluasi input deadline Anda untuk menyalakan indikator visual:
+            </p>
+          </div>
+
+          <div class="flex items-center justify-center border-b border-slate-200 max-w-xl mx-auto mb-10 overflow-x-auto">
+            <button type="button" data-target="tabUrgent" class="urgency-tab-trigger px-5 py-3 text-sm font-bold border-b-2 border-indigo-600 text-indigo-600 bg-indigo-50/50 rounded-t-lg transition whitespace-nowrap">
+              🔴 H-1 Kritis (Merah)
+            </button>
+            <button type="button" data-target="tabWarning" class="urgency-tab-trigger px-5 py-3 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-700 rounded-t-lg transition whitespace-nowrap">
+              🟡 H-3 Waspada (Kuning)
+            </button>
+            <button type="button" data-target="tabSafe" class="urgency-tab-trigger px-5 py-3 text-sm font-semibold border-b-2 border-transparent text-slate-500 hover:text-slate-700 rounded-t-lg transition whitespace-nowrap">
+              🟢 H-7 Terencana (Hijau)
+            </button>
+          </div>
+
+          <div id="tabUrgent" class="urgency-tab-panel max-w-3xl mx-auto bg-rose-50/50 border border-rose-200 rounded-2xl p-6 sm:p-8">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-5">
+              <div class="w-16 h-16 rounded-2xl bg-rose-500 text-white flex items-center justify-center flex-shrink-0 shadow-lg shadow-rose-500/20 text-2xl font-bold">!</div>
+              <div>
+                <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full text-xs font-bold badge-urgent mb-2">
+                  H-1: Kurang dari 24 Jam
+                </div>
+                <h3 class="text-xl font-bold text-slate-900">Merah Memaksa Tindakan Segera</h3>
+                <p class="text-sm text-slate-600 mt-2 leading-relaxed">
+                  Ketika deadline tersisa kurang dari 24 jam, sistem otomatis menetapkan status Merah H-1 dan menempatkan tugas di prioritas paling atas untuk mengalahkan godaan main game.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div id="tabWarning" class="urgency-tab-panel hidden max-w-3xl mx-auto bg-amber-50/50 border border-amber-200 rounded-2xl p-6 sm:p-8">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-5">
+              <div class="w-16 h-16 rounded-2xl bg-amber-500 text-white flex items-center justify-center flex-shrink-0 shadow-lg shadow-amber-500/20 text-2xl font-bold">⏳</div>
+              <div>
+                <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full text-xs font-bold badge-warning mb-2">
+                  H-3: Antara 1 Hingga 3 Hari
+                </div>
+                <h3 class="text-xl font-bold text-slate-900">Kuning: Waktu Emas Mulai Mencicil</h3>
+                <p class="text-sm text-slate-600 mt-2 leading-relaxed">
+                  Tenggat waktu 1-3 hari ke depan memicu warna kuning peringatan dini agar Anda membuka link modul dan mencicil pengerjaan tanpa rasa panik.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div id="tabSafe" class="urgency-tab-panel hidden max-w-3xl mx-auto bg-emerald-50/50 border border-emerald-200 rounded-2xl p-6 sm:p-8">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-5">
+              <div class="w-16 h-16 rounded-2xl bg-emerald-500 text-white flex items-center justify-center flex-shrink-0 shadow-lg shadow-emerald-500/20 text-2xl font-bold">✓</div>
+              <div>
+                <div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full text-xs font-bold badge-safe mb-2">
+                  H-7: Lebih dari 3 Hari
+                </div>
+                <h3 class="text-xl font-bold text-slate-900">Hijau: Tenang & Terencana</h3>
+                <p class="text-sm text-slate-600 mt-2 leading-relaxed">
+                  Tugas berjangka lebih dari 3 hari berstatus hijau aman. Jadwal semester tersusun gamblang tanpa stres mendadak.
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 6. INTERACTIVE LIVE DEMO & AHA MOMENT -->
+      <section id="live-demo" class="py-16 sm:py-24 bg-slate-50 scroll-mt-16">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div class="text-center max-w-3xl mx-auto mb-10">
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+              Simulasi Interaktif
+            </span>
+            <h2 class="mt-4 text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+              Coba Simulasi Tambah Tugas (Kalkulasi Otomatis Sistem)
+            </h2>
+            <p class="mt-3 text-base text-slate-600">
+              Klik "+ Tambah Tugas / Lab" di bawah, input deadline, dan saksikan sistem memproses tingkat urgensinya secara otomatis:
+            </p>
+          </div>
+
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-lg overflow-hidden">
+            
+            <div class="p-4 sm:p-6 border-b border-slate-200 bg-slate-50/70 flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                <button type="button" data-filter="all" class="filter-pill-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-indigo-600 text-white shadow-sm transition">
+                  Semua Item
+                </button>
+                <button type="button" data-filter="critical" class="filter-pill-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition flex items-center gap-1">
+                  <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+                  H-1 Mendesak
+                </button>
+                <button type="button" data-filter="lab" class="filter-pill-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition flex items-center gap-1">
+                  <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                  Praktikum Lab
+                </button>
+                <button type="button" data-filter="pending" class="filter-pill-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">
+                  Belum Selesai
+                </button>
+              </div>
+
+              <div class="flex items-center gap-2">
+                <button type="button" id="resetSimulatorBtn" class="px-3 py-1.5 text-xs font-medium text-slate-500 hover:text-slate-800 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition">
+                  Reset
+                </button>
+                <button type="button" class="open-add-task-modal inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-sm transition">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                  + Tambah Tugas (Kalkulasi Deadline)
+                </button>
+              </div>
+            </div>
+
+            <div class="px-4 sm:px-6 py-2.5 bg-indigo-50/50 border-b border-indigo-100/60 flex items-center justify-between text-xs text-indigo-900 font-medium">
+              <span class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-indigo-600 animate-pulse"></span>
+                Status Pengerjaan
+              </span>
+              <span id="completedTasksCounter" class="font-bold text-indigo-700">1 dari 4 selesai</span>
+            </div>
+
+            <div id="simulatorTasksList" class="p-4 sm:p-6 space-y-3.5 min-h-[280px]">
+              <!-- Rendered dynamically -->
+            </div>
+
+            <div class="p-4 sm:p-6 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+              <div>
+                🚀 <strong>Siap memakai fitur lengkap?</strong> Masuk sekarang untuk mengakses dashboard mahasiswa seutuhnya.
+              </div>
+              <button type="button" class="btn-coba-sekarang text-indigo-600 font-bold hover:underline whitespace-nowrap">
+                Coba Sekarang & Masuk ke Dashboard →
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 7. FAQ ACCORDION -->
+      <section id="faq" class="py-16 sm:py-24 bg-white border-t border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div class="text-center max-w-2xl mx-auto mb-14">
+            <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">
+              Pertanyaan yang Sering Diajukan
+            </span>
+            <h2 class="mt-4 text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+              Tanya Jawab Seputar TaskLab
+            </h2>
+          </div>
+
+          <div class="space-y-4">
+            <div class="accordion-item rounded-xl border border-slate-200 bg-slate-50/50 overflow-hidden transition active">
+              <button type="button" class="accordion-trigger w-full px-5 py-4 text-left flex items-center justify-between gap-4 font-bold text-slate-900 text-sm sm:text-base focus:outline-none">
+                <span>Bagaimana sistem menentukan tingkat urgensi tugas?</span>
+                <svg class="accordion-icon w-5 h-5 text-slate-400 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </button>
+              <div class="accordion-content px-5 pb-4 text-sm text-slate-600 leading-relaxed">
+                Tingkat urgensi tidak dipilih manual, melainkan diproses otomatis oleh sistem berdasarkan input tanggal & waktu deadline Anda. Jika deadline &le; 24 jam, sistem otomatis menetapkan status 🔴 H-1 Kritis. Jika antara 1 sampai 3 hari, ditetapkan status 🟡 H-3 Waspada. Lebih dari 3 hari berstatus 🟢 H-7 Aman.
+              </div>
+            </div>
+
+            <div class="accordion-item rounded-xl border border-slate-200 bg-slate-50/50 overflow-hidden transition">
+              <button type="button" class="accordion-trigger w-full px-5 py-4 text-left flex items-center justify-between gap-4 font-bold text-slate-900 text-sm sm:text-base focus:outline-none">
+                <span>Apakah bisa langsung dicoba tanpa harus repot register?</span>
+                <svg class="accordion-icon w-5 h-5 text-slate-400 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </button>
+              <div class="accordion-content px-5 pb-4 text-sm text-slate-600 leading-relaxed">
+                Bisa banget! Klik tombol "Coba Sekarang" atau "Masuk", lalu klik tombol <strong>"⚡ 1-Klik Masuk sebagai Mahasiswa Informatika (Demo)"</strong>. Anda langsung bisa memakai dashboard dan seluruh fiturnya dalam hitungan detik!
+              </div>
+            </div>
+
+            <div class="accordion-item rounded-xl border border-slate-200 bg-slate-50/50 overflow-hidden transition">
+              <button type="button" class="accordion-trigger w-full px-5 py-4 text-left flex items-center justify-between gap-4 font-bold text-slate-900 text-sm sm:text-base focus:outline-none">
+                <span>Apakah tampilan nyaman digunakan di layar smartphone (HP)?</span>
+                <svg class="accordion-icon w-5 h-5 text-slate-400 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </button>
+              <div class="accordion-content px-5 pb-4 text-sm text-slate-600 leading-relaxed">
+                Sangat nyaman! Dilengkapi dengan Bottom Action Bar di HP, navigasi drawer yang responsif, dan tombol aksi yang nyaman ditekan dengan satu jempol.
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 8. FINAL CALL TO ACTION -->
+      <section class="py-16 sm:py-24 bg-gradient-to-b from-white to-indigo-50/70">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          
+          <div class="p-8 sm:p-14 rounded-3xl bg-gradient-to-tr from-indigo-700 via-indigo-600 to-violet-700 text-white shadow-2xl relative overflow-hidden">
+            <div class="absolute -right-16 -top-16 w-64 h-64 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
+
+            <h2 class="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight">
+              Hentikan Prokrastinasi.<br class="hidden sm:inline">
+              Mulai Semester Ini dengan Terkendali.
+            </h2>
+            <p class="mt-4 text-sm sm:text-base text-indigo-100 max-w-xl mx-auto leading-relaxed">
+              Masuk sekarang dan kelola seluruh beban kuliah serta jadwal praktikum Anda dalam satu platform cerdas.
+            </p>
+
+            <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3.5">
+              <button type="button" class="btn-coba-sekarang w-full sm:w-auto px-8 py-3.5 rounded-xl bg-white text-indigo-700 font-bold hover:bg-indigo-50 transition shadow-lg cursor-pointer">
+                Coba Sekarang (Daftar / Masuk)
+              </button>
+              <button type="button" class="btn-open-login w-full sm:w-auto px-7 py-3.5 rounded-xl bg-indigo-800/60 hover:bg-indigo-800 text-white font-semibold transition border border-indigo-400/30">
+                Sudah Punya Akun? Masuk
+              </button>
+            </div>
+
+            <p class="mt-5 text-xs text-indigo-200">
+              Gratis • Ringan & Responsif di HP maupun Laptop
+            </p>
+          </div>
+
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-400 pt-16 pb-12 border-t border-slate-800">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-slate-800">
+          <div class="md:col-span-5">
+            <div class="flex items-center gap-2.5 mb-4">
+              <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+              </div>
+              <span class="text-xl font-bold text-white tracking-tight">TaskLab</span>
+            </div>
+            <p class="text-sm text-slate-400 max-w-sm leading-relaxed">
+              Platform manajemen tugas & praktikum terpadu untuk mahasiswa aktif.
+            </p>
+          </div>
+          <div class="md:col-span-7 flex flex-wrap gap-8 justify-start md:justify-end">
+            <button type="button" class="btn-open-login text-sm text-white hover:text-indigo-400">Masuk ke Akun</button>
+            <button type="button" class="btn-coba-sekarang text-sm text-white hover:text-indigo-400">Coba Sekarang</button>
+            <a href="#live-demo" class="text-sm text-slate-400 hover:text-white">Simulasi Demo</a>
+          </div>
+        </div>
+        <div class="pt-8 text-center sm:text-left text-xs text-slate-500">
+          &copy; 2026 TaskLab - Student Task & Lab Manager.
+        </div>
+      </div>
+    </footer>
+
+    <!-- MOBILE FLOATING ACTION BAR FOR LANDING -->
+    <div class="mobile-action-bar items-center justify-between gap-3">
+      <button type="button" class="btn-open-login flex-1 py-2.5 text-center text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition">
+        Masuk
+      </button>
+      <button type="button" class="btn-coba-sekarang flex-1 py-2.5 text-center text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow transition">
+        Coba Sekarang
+      </button>
+    </div>
+
+  </div> <!-- End #landingView -->
+
+  <!-- ======================================================================= -->
+  <!-- VIEW 2: AUTHENTICATED APP DASHBOARD (TAMPILAN SETELAH LOGIN)           -->
+  <!-- ======================================================================= -->
+  <div id="appView" class="hidden min-h-screen bg-slate-50 flex flex-col transition-all duration-300">
+    
+    <!-- APP TOP NAVBAR -->
+    <header class="sticky top-0 z-40 w-full bg-white border-b border-slate-200 shadow-xs">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16 sm:h-20">
+          
+          <!-- Brand + Active Context -->
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-600 flex items-center justify-center text-white shadow-sm">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+              </svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-lg font-bold text-slate-900 leading-none">Task<span class="text-indigo-600">Lab</span></span>
+                <span class="text-[10px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-full">
+                  Student Hub
+                </span>
+              </div>
+              <span class="text-xs text-slate-400 hidden sm:block">Panel Kerja Mahasiswa</span>
+            </div>
+          </div>
+
+          <!-- Desktop App Navigation Tabs -->
+          <nav class="hidden md:flex items-center gap-1">
+            <button type="button" data-app-tab="overview" class="app-nav-tab active px-4 py-2 text-sm font-bold text-slate-600 rounded-lg transition flex items-center gap-1.5">
+              <span>📊 Dashboard Minggu Ini</span>
+            </button>
+            <button type="button" data-app-tab="tasks" class="app-nav-tab px-4 py-2 text-sm font-semibold text-slate-600 rounded-lg transition flex items-center gap-1.5">
+              <span>📝 Kelola Semua Tugas</span>
+            </button>
+            <button type="button" data-app-tab="labs" class="app-nav-tab px-4 py-2 text-sm font-semibold text-slate-600 rounded-lg transition flex items-center gap-1.5">
+              <span>🧪 Jadwal Praktikum</span>
+            </button>
+          </nav>
+
+          <!-- Action Buttons & User Profile / Logout -->
+          <div class="flex items-center gap-3">
+            
+            <!-- Quick Add Dropdown / Button -->
+            <button type="button" class="open-add-task-modal hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition shadow-xs">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+              <span>+ Tugas Baru</span>
+            </button>
+
+            <!-- User Info Badge -->
+            <div class="flex items-center gap-2 pl-2 border-l border-slate-200">
+              <div id="userAvatarInitials" class="w-9 h-9 rounded-xl bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-xs">
+                U1
+              </div>
+              <div class="hidden lg:block text-left">
+                <div id="userProfileName" class="text-xs font-bold text-slate-800 leading-tight">user123</div>
+                <div id="userProfileMajor" class="text-[11px] text-slate-500">Teknik Informatika</div>
+              </div>
+            </div>
+
+            <!-- Logout Button (PRD requirement: Tombol Log Out) -->
+            <button type="button" id="logoutBtn" title="Keluar dari akun" class="p-2 sm:px-3 sm:py-2 text-slate-600 hover:text-red-600 bg-slate-100 hover:bg-red-50 rounded-xl transition text-xs font-bold flex items-center gap-1.5 border border-slate-200 hover:border-red-200">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+              </svg>
+              <span class="hidden sm:inline">Keluar</span>
+            </button>
+
+          </div>
+
+        </div>
+      </div>
+    </header>
+
+    <!-- APP MAIN CONTENT BODY -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
+      
+      <!-- Welcome Greeting & Urgency Alert Bar -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-xs">
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
+              Halo, <span id="appGreetingName">user123</span>! 👋
+            </h1>
+            <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+              Semester Aktif
+            </span>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-500 mt-1" id="appTodayDate">
+            Senin, 2 November 2026 • Fokus hari ini: Selesaikan tugas kritis sebelum waktu luang Anda.
+          </p>
+        </div>
+
+        <!-- Quick actions on app -->
+        <div class="flex items-center gap-2">
+          <button type="button" class="open-add-task-modal px-4 py-2.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-xs transition flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+            <span>+ Catat Tugas Baru</span>
+          </button>
+          <button type="button" class="open-add-lab-modal px-3.5 py-2.5 text-xs font-bold text-purple-700 bg-purple-50 hover:bg-purple-100 border border-purple-200 rounded-xl transition flex items-center gap-1.5">
+            <span>🧪 + Jadwal Lab</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Critical Urgency Alert Banner (Dynamic) -->
+      <div id="appUrgentBanner" class="p-4 rounded-2xl bg-gradient-to-r from-rose-500 to-red-600 text-white shadow-md flex items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center text-xl flex-shrink-0">
+            ⚠️
+          </div>
+          <div>
+            <div class="text-sm font-bold">Peringatan Deadline Kritis (H-1)</div>
+            <div class="text-xs text-rose-100" id="appUrgentBannerText">
+              Ada 1 tugas yang tenggat waktunya besok! Kalahkan prokrastinasi dan tuntaskan sekarang.
+            </div>
+          </div>
+        </div>
+        <button type="button" onclick="switchAppTab('tasks', 'critical')" class="px-3.5 py-1.5 bg-white text-rose-700 font-bold text-xs rounded-xl shadow hover:bg-rose-50 transition whitespace-nowrap">
+          Lihat Tugas Kritis →
+        </button>
+      </div>
+
+      <!-- Quick Metrics Grid -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xs">
+          <div class="text-xs font-medium text-slate-500">Tugas Aktif</div>
+          <div class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1" id="statActiveTasks">3</div>
+          <div class="text-[11px] text-indigo-600 mt-1">Perlu dikerjakan</div>
+        </div>
+        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-rose-200 bg-rose-50/20 shadow-xs">
+          <div class="text-xs font-medium text-rose-600">Mendesak (H-1)</div>
+          <div class="text-2xl sm:text-3xl font-extrabold text-rose-600 mt-1" id="statCriticalTasks">1</div>
+          <div class="text-[11px] text-rose-600 mt-1">Deadline &le; 24 jam</div>
+        </div>
+        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-purple-200 bg-purple-50/20 shadow-xs">
+          <div class="text-xs font-medium text-purple-700">Praktikum Minggu Ini</div>
+          <div class="text-2xl sm:text-3xl font-extrabold text-purple-700 mt-1" id="statLabSessions">2</div>
+          <div class="text-[11px] text-purple-600 mt-1">Jadwal lab terpisah</div>
+        </div>
+        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-emerald-200 bg-emerald-50/20 shadow-xs">
+          <div class="text-xs font-medium text-emerald-700">Selesai Tepat Waktu</div>
+          <div class="text-2xl sm:text-3xl font-extrabold text-emerald-600 mt-1" id="statCompletedTasks">98%</div>
+          <div class="text-[11px] text-emerald-600 mt-1">Tingkat keberhasilan</div>
+        </div>
+      </div>
+
+      <!-- APP TAB PANE 1: DASHBOARD MINGGU INI (OVERVIEW) -->
+      <section id="paneOverview" class="app-pane space-y-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          
+          <!-- Left column: Agenda Hari Ini & Tugas Berurutan Urgensi -->
+          <div class="lg:col-span-8 space-y-4">
+            <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-xs">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-3">
+                <div>
+                  <h3 class="text-base font-bold text-slate-900">Agenda & Prioritas Minggu Ini</h3>
+                  <p class="text-xs text-slate-500">Diurutkan otomatis oleh sistem: Kritis (Merah) &rarr; Waspada (Kuning) &rarr; Aman (Hijau)</p>
+                </div>
+                <!-- Filter Pills -->
+                <div class="flex items-center gap-1.5 overflow-x-auto">
+                  <button type="button" data-app-filter="all" class="app-filter-pill px-3 py-1 rounded-lg text-xs font-semibold bg-indigo-600 text-white transition">
+                    Semua
+                  </button>
+                  <button type="button" data-app-filter="critical" class="app-filter-pill px-3 py-1 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">
+                    🔴 H-1 Saja
+                  </button>
+                  <button type="button" data-app-filter="lab" class="app-filter-pill px-3 py-1 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600 hover:bg-slate-200 transition">
+                    🧪 Lab
+                  </button>
+                </div>
+              </div>
+
+              <!-- List Container -->
+              <div id="appOverviewList" class="divide-y divide-slate-100 mt-2">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Right column: Jadwal Praktikum Ringkas & Link Cepat Materi -->
+          <div class="lg:col-span-4 space-y-6">
+            
+            <!-- Widget Praktikum Minggu Ini -->
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-purple-600"></span>
+                  <h3 class="text-sm font-bold text-slate-900">Jadwal Praktikum Lab</h3>
+                </div>
+                <button type="button" class="open-add-lab-modal text-xs font-bold text-purple-600 hover:underline">
+                  + Tambah
+                </button>
+              </div>
+
+              <div id="appOverviewLabsList" class="space-y-3">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+
+            <!-- Widget Tips Anti-Prokrastinasi -->
+            <div class="bg-gradient-to-br from-indigo-50 to-purple-50 p-5 rounded-2xl border border-indigo-100">
+              <div class="flex items-center gap-2 text-indigo-900 font-bold text-xs uppercase tracking-wider mb-2">
+                <span>💡</span> Strategi Mahasiswa Berprestasi
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                "Jangan menunggu rasa 'mood' datang. Kerjakan 5 menit pertama saat status kuning H-3 menyala. Setelah mulai, otak akan lebih mudah melanjutkannya hingga tuntas."
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- APP TAB PANE 2: KELOLA SEMUA TUGAS (CRUD & FILTER) -->
+      <section id="paneTasks" class="app-pane hidden space-y-4">
+        <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-xs">
+          
+          <!-- Toolbar -->
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-slate-100">
+            <div>
+              <h2 class="text-lg font-bold text-slate-900">Modul CRUD Tugas & Deadline</h2>
+              <p class="text-xs text-slate-500">Kelola status pengerjaan, tracking riwayat, dan tautan modul referensi.</p>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2">
+              <input 
+                type="text" 
+                id="searchTaskInput" 
+                placeholder="Cari tugas / mata kuliah..." 
+                class="px-3.5 py-2 text-xs rounded-xl border border-slate-300 focus:border-indigo-500 outline-none w-48 sm:w-60"
+              >
+              <select id="filterCourseSelect" class="px-3 py-2 text-xs rounded-xl border border-slate-300 bg-white outline-none">
+                <option value="all">Semua Mata Kuliah</option>
+              </select>
+              <button type="button" class="open-add-task-modal px-3.5 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition shadow-xs flex items-center gap-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                <span>+ Buat Tugas</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Tasks Full List -->
+          <div id="appFullTasksList" class="space-y-3 pt-4">
+            <!-- Rendered dynamically -->
+          </div>
+
+        </div>
+      </section>
+
+      <!-- APP TAB PANE 3: JADWAL PRAKTIKUM (LAB SCHEDULE) -->
+      <section id="paneLabs" class="app-pane hidden space-y-4">
+        <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-xs">
+          
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-100">
+            <div>
+              <div class="flex items-center gap-2">
+                <h2 class="text-lg font-bold text-slate-900">Kalender & Sesi Praktikum Khusus</h2>
+                <span class="text-[11px] font-bold text-purple-700 bg-purple-50 px-2.5 py-0.5 rounded-full border border-purple-200">
+                  Prioritas P1 Wajib
+                </span>
+              </div>
+              <p class="text-xs text-slate-500 mt-0.5">Jadwal rutin praktikum terpisah dari tugas biasa, dilengkapi jam, asisten lab, dan modul materi.</p>
+            </div>
+
+            <button type="button" class="open-add-lab-modal px-4 py-2.5 text-xs font-bold text-white bg-purple-600 hover:bg-purple-700 rounded-xl transition shadow-xs flex items-center gap-1.5 self-start sm:self-auto">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+              <span>+ Tambah Jadwal Praktikum</span>
+            </button>
+          </div>
+
+          <!-- Lab Cards Grid -->
+          <div id="appFullLabsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
+            <!-- Rendered dynamically -->
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- MOBILE APP BOTTOM NAVIGATION BAR (KHUSUS SMARTPHONE SETELAH LOGIN) -->
+    <div class="mobile-app-bottom-bar items-center justify-around gap-1">
+      <button type="button" onclick="switchAppTab('overview')" class="flex-1 py-1.5 text-center flex flex-col items-center text-indigo-600 font-bold text-[10px]">
+        <span class="text-base">📊</span>
+        <span>Dashboard</span>
+      </button>
+      <button type="button" onclick="switchAppTab('tasks')" class="flex-1 py-1.5 text-center flex flex-col items-center text-slate-500 font-medium text-[10px] hover:text-indigo-600">
+        <span class="text-base">📝</span>
+        <span>Tugas</span>
+      </button>
+      <button type="button" class="open-add-task-modal flex-1 py-1 text-center flex flex-col items-center justify-center">
+        <span class="w-9 h-9 rounded-full bg-indigo-600 text-white flex items-center justify-center text-lg font-bold shadow-md -mt-3">+</span>
+      </button>
+      <button type="button" onclick="switchAppTab('labs')" class="flex-1 py-1.5 text-center flex flex-col items-center text-slate-500 font-medium text-[10px] hover:text-indigo-600">
+        <span class="text-base">🧪</span>
+        <span>Praktikum</span>
+      </button>
+      <button type="button" id="mobileLogoutBtn" class="flex-1 py-1.5 text-center flex flex-col items-center text-slate-500 font-medium text-[10px] hover:text-red-600">
+        <span class="text-base">🚪</span>
+        <span>Keluar</span>
+      </button>
+    </div>
+
+  </div> <!-- End #appView -->
+
+
+  <!-- ======================================================================= -->
+  <!-- MODAL: AUTHENTICATION (LOGIN & SIGN UP)                                  -->
+  <!-- ======================================================================= -->
+  <div id="authModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-200 overflow-hidden transform transition-all modal-enter">
+      
+      <!-- Modal Header -->
+      <div class="px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center text-xs font-bold shadow-xs">
+            TL
+          </div>
+          <span class="text-base font-extrabold text-slate-900">Masuk ke TaskLab</span>
+        </div>
+        <button id="closeAuthModal" type="button" aria-label="Tutup" class="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-200/60 transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <!-- Auth Switcher Tabs -->
+      <div class="flex border-b border-slate-200 bg-slate-50/50">
+        <button type="button" id="tabBtnLogin" class="flex-1 py-3 text-xs font-bold text-indigo-600 border-b-2 border-indigo-600 transition">
+          Masuk (Login)
+        </button>
+        <button type="button" id="tabBtnSignup" class="flex-1 py-3 text-xs font-semibold text-slate-500 hover:text-slate-700 transition">
+          Daftar Akun Baru
+        </button>
+      </div>
+
+      <div class="p-6">
+        <!-- 1-Click Instant Demo Login (Super User Friendly) -->
+        <button type="button" id="btnInstantDemoLogin" class="w-full mb-5 py-2.5 px-4 rounded-xl bg-gradient-to-r from-indigo-500 to-violet-600 text-white font-bold text-xs flex items-center justify-center gap-2 shadow hover:from-indigo-600 hover:to-violet-700 transition">
+          <span>⚡</span>
+          <span>1-Klik Masuk sebagai Mahasiswa Informatika (Demo)</span>
+        </button>
+
+        <div class="relative flex items-center justify-center mb-5">
+          <div class="border-t border-slate-200 w-full"></div>
+          <span class="bg-white px-3 text-[11px] text-slate-400 uppercase tracking-wider">Atau gunakan kredensial</span>
+        </div>
+
+        <!-- FORM LOGIN -->
+        <form id="loginForm" class="space-y-4">
+          <div>
+            <label for="loginEmail" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+              Email Mahasiswa / Username
+            </label>
+            <input 
+              type="text" 
+              id="loginEmail" 
+              required 
+              value="user123@kampus.ac.id" 
+              class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none transition"
+            >
+          </div>
+
+          <div>
+            <label for="loginPassword" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+              Kata Sandi
+            </label>
+            <input 
+              type="password" 
+              id="loginPassword" 
+              required 
+              value="••••••••" 
+              class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none transition"
+            >
+          </div>
+
+          <div class="flex items-center justify-between text-xs">
+            <label class="flex items-center gap-2 text-slate-600 cursor-pointer">
+              <input type="checkbox" checked class="rounded border-slate-300 text-indigo-600 focus:ring-0">
+              <span>Ingat saya di perangkat ini</span>
+            </label>
+            <a href="#" onclick="event.preventDefault(); alert('Untuk simulasi demo, gunakan email yang tertera atau klik 1-Klik Masuk.');" class="text-indigo-600 hover:underline font-semibold">Lupa sandi?</a>
+          </div>
+
+          <button 
+            type="submit" 
+            class="glow-btn w-full py-2.5 rounded-xl bg-indigo-600 text-white font-bold text-sm hover:bg-indigo-700 transition shadow"
+          >
+            Masuk ke Dashboard Mahasiswa →
+          </button>
+        </form>
+
+        <!-- FORM SIGN UP -->
+        <form id="signupForm" class="space-y-3.5 hidden">
+          <div>
+            <label for="signupName" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+              Nama Lengkap
+            </label>
+            <input 
+              type="text" 
+              id="signupName" 
+              required 
+              placeholder="Contoh: user123" 
+              class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none transition"
+            >
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label for="signupMajor" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                Program Studi
+              </label>
+              <input 
+                type="text" 
+                id="signupMajor" 
+                required 
+                placeholder="Teknik Informatika" 
+                class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm focus:border-indigo-500 outline-none transition"
+              >
+            </div>
+            <div>
+              <label for="signupSemester" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+                Semester
+              </label>
+              <select id="signupSemester" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm bg-white outline-none">
+                <option value="Semester 2">Semester 2</option>
+                <option value="Semester 4" selected>Semester 4</option>
+                <option value="Semester 6">Semester 6</option>
+                <option value="Semester 8">Semester 8</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label for="signupEmail" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+              Email Mahasiswa
+            </label>
+            <input 
+              type="email" 
+              id="signupEmail" 
+              required 
+              placeholder="nama@kampus.ac.id" 
+              class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm focus:border-indigo-500 outline-none transition"
+            >
+          </div>
+
+          <div>
+            <label for="signupPassword" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
+              Kata Sandi
+            </label>
+            <input 
+              type="password" 
+              id="signupPassword" 
+              required 
+              placeholder="Minimal 6 karakter" 
+              class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm focus:border-indigo-500 outline-none transition"
+            >
+          </div>
+
+          <button 
+            type="submit" 
+            class="glow-btn w-full py-2.5 rounded-xl bg-indigo-600 text-white font-bold text-sm hover:bg-indigo-700 transition shadow mt-2"
+          >
+            Daftar & Langsung Masuk →
+          </button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ======================================================================= -->
+  <!-- MODAL: ADD TASK (DENGAN TINGKAT URGENSI DIHITUNG OTOMATIS OLEH SISTEM)    -->
+  <!-- ======================================================================= -->
+  <div id="addTaskModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden transform transition-all modal-enter">
+      
+      <!-- Modal Header -->
+      <div class="px-6 py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center text-xs font-bold">
+            +
+          </div>
+          <div>
+            <h3 class="text-sm font-bold text-slate-900">Catat Tugas Baru</h3>
+            <p class="text-[11px] text-slate-500">Tingkat urgensi dihitung otomatis oleh sistem dari deadline</p>
+          </div>
+        </div>
+        <button id="closeAddTaskModal" type="button" aria-label="Tutup" class="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-200/60 transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <!-- Modal Body Form -->
+      <form id="quickAddTaskForm" class="p-6 space-y-4">
+        
+        <div>
+          <label for="modalTaskTitle" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+            Nama Tugas / Deskripsi <span class="text-rose-500">*</span>
+          </label>
+          <input 
+            type="text" 
+            id="modalTaskTitle" 
+            required 
+            placeholder="Contoh: Laporan Akhir Jaringan Komputer: Routing OSPF" 
+            class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none transition"
+          >
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="modalTaskCourse" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+              Mata Kuliah
+            </label>
+            <input 
+              type="text" 
+              id="modalTaskCourse" 
+              placeholder="Contoh: Jaringan Komputer II" 
+              class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none transition"
+            >
+          </div>
+
+          <div>
+            <label for="modalTaskLink" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+              Link Modul / Referensi (P2)
+            </label>
+            <input 
+              type="text" 
+              id="modalTaskLink" 
+              placeholder="Contoh: Modul-07.pdf / GitHub" 
+              class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none transition"
+            >
+          </div>
+        </div>
+
+        <!-- INPUT DEADLINE (DATE & TIME) - MENGGANTIKAN DROPDOWN MANUAL -->
+        <div>
+          <label for="modalTaskDeadline" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+            Tenggat Waktu (Deadline) <span class="text-rose-500">*</span>
+          </label>
+          <input 
+            type="datetime-local" 
+            id="modalTaskDeadline" 
+            required 
+            class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none transition bg-white"
+          >
+          <span class="text-[11px] text-slate-400 mt-1 block">
+            Pilih tanggal dan jam. Sistem akan menghitung selisih waktu secara cerdas.
+          </span>
+        </div>
+
+        <!-- DYNAMIC SYSTEM URGENCY CALCULATION INDICATOR (PROCESSED BY SYSTEM) -->
+        <div id="systemUrgencyBox" class="urgency-calc-box p-3.5 rounded-xl border border-slate-200 bg-slate-50 flex items-start gap-3 transition-all duration-200">
+          <div id="systemUrgencyIcon" class="text-xl flex-shrink-0 mt-0.5">⚙️</div>
+          <div>
+            <div id="systemUrgencyTitle" class="text-xs font-bold text-slate-800">
+              Sistem Siap Menghitung Tingkat Urgensi
+            </div>
+            <div id="systemUrgencyDesc" class="text-[11px] text-slate-500 mt-0.5">
+              Tentukan deadline di atas. Sistem otomatis mengategorikan: &le;24 jam (🔴 Merah), 1-3 hari (🟡 Kuning), &gt;3 hari (🟢 Hijau).
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-3">
+          <button 
+            type="button" 
+            id="btnCancelAddTask"
+            class="px-4 py-2 text-xs font-bold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-xl transition"
+          >
+            Batal
+          </button>
+          <button 
+            type="submit" 
+            class="glow-btn px-5 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition shadow"
+          >
+            Simpan Tugas →
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+
+  <!-- ======================================================================= -->
+  <!-- MODAL: ADD JADWAL PRAKTIKUM (LAB SCHEDULE MODAL)                        -->
+  <!-- ======================================================================= -->
+  <div id="addLabModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden transform transition-all modal-enter">
+      
+      <div class="px-6 py-4 bg-purple-50/70 border-b border-purple-100 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-lg bg-purple-600 text-white flex items-center justify-center text-xs font-bold">
+            🧪
+          </div>
+          <div>
+            <h3 class="text-sm font-bold text-slate-900">Tambah Jadwal Praktikum Lab</h3>
+            <p class="text-[11px] text-purple-700">Jadwal rutin praktikum terpisah dari tugas biasa</p>
+          </div>
+        </div>
+        <button id="closeAddLabModal" type="button" aria-label="Tutup" class="text-slate-400 hover:text-slate-600 p-1.5 rounded-lg hover:bg-slate-200/60 transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <form id="quickAddLabForm" class="p-6 space-y-4">
+        <div>
+          <label for="modalLabTitle" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+            Topik Praktikum / Sesi <span class="text-rose-500">*</span>
+          </label>
+          <input 
+            type="text" 
+            id="modalLabTitle" 
+            required 
+            placeholder="Contoh: Sesi 4: REST API & Arsitektur MVC Flask" 
+            class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:border-purple-500 focus:ring-2 focus:ring-purple-100 outline-none transition"
+          >
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="modalLabCourse" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+              Mata Kuliah Praktikum <span class="text-rose-500">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="modalLabCourse" 
+              required 
+              placeholder="Contoh: Praktikum Pemrograman Web" 
+              class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:border-purple-500 outline-none transition"
+            >
+          </div>
+
+          <div>
+            <label for="modalLabRoom" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+              Ruangan Lab / Link Zoom <span class="text-rose-500">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="modalLabRoom" 
+              required 
+              placeholder="Contoh: Lab 302 Gedung B / Zoom" 
+              class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:border-purple-500 outline-none transition"
+            >
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="modalLabTime" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+              Hari & Jam Sesi <span class="text-rose-500">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="modalLabTime" 
+              required 
+              placeholder="Contoh: Setiap Rabu, 13:00 - 15:30" 
+              class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:border-purple-500 outline-none transition"
+            >
+          </div>
+
+          <div>
+            <label for="modalLabAssistant" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+              Nama Asisten Lab
+            </label>
+            <input 
+              type="text" 
+              id="modalLabAssistant" 
+              placeholder="Contoh: Kak Arya & Kak Cindy" 
+              class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:border-purple-500 outline-none transition"
+            >
+          </div>
+        </div>
+
+        <div>
+          <label for="modalLabLink" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+            Link Modul Praktikum / GitHub Starter
+          </label>
+          <input 
+            type="text" 
+            id="modalLabLink" 
+            placeholder="Contoh: Modul Flask Jinja2.pdf" 
+            class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:border-purple-500 outline-none transition"
+          >
+        </div>
+
+        <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-3">
+          <button 
+            type="button" 
+            id="btnCancelAddLab"
+            class="px-4 py-2 text-xs font-bold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-xl transition"
+          >
+            Batal
+          </button>
+          <button 
+            type="submit" 
+            class="px-5 py-2 text-xs font-bold text-white bg-purple-600 hover:bg-purple-700 rounded-xl transition shadow"
+          >
+            Simpan Jadwal Praktikum →
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+
+  <!-- Global Toast Notification Helper -->
+  <div id="globalToast" class="fixed top-5 right-5 z-50 flex items-center gap-3 px-4 py-3 bg-slate-900 text-white text-sm font-medium rounded-xl shadow-xl border border-slate-700 transition-all duration-300 transform -translate-y-24 opacity-0 pointer-events-none max-w-sm"></div>
+
+  <!-- JavaScript Application Bundle -->
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
